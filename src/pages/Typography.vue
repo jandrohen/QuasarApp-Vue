@@ -49,14 +49,28 @@
 
     <q-separator />
 
-    <q-btn color="primary" label="Abrir menú lateral" class="q-mt-md" />
+    <q-btn
+      color="primary"
+      :label="sideMenuOpen ? 'Close lateral menu' : 'Open lateral menu'"
+      class="q-mt-md"
+      @click="toggleSideMenu"
+    />
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import useUI from "../composables/useUI";
 
 export default defineComponent({
   name: "Typography",
+
+  setup() {
+    const { sideMenuOpen, toggleSideMenu } = useUI();
+    return {
+      toggleSideMenu,
+      sideMenuOpen,
+    };
+  },
 });
 </script>
