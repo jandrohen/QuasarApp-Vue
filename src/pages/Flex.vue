@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <h1>index.vue</h1>
+    <h1>flex</h1>
   </q-page>
 </template>
 
