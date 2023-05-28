@@ -48,6 +48,8 @@
     >
 
     <q-separator />
+
+    <q-btn color="primary" label="Abrir menú lateral" class="q-mt-md" />
   </q-page>
 </template>
 
