@@ -67,6 +67,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "Forms",
@@ -79,12 +80,18 @@ export default defineComponent({
       errorInConditions: false,
     });
 
+    const { notify } = useQuasar();
+
     return {
       userForm,
       onSubmit() {
-        console.log(userForm.value);
         userForm.value.errorInConditions = false;
         if (!userForm.value.conditions) {
+          notify({
+            message: "You must accept the conditions",
+            color: "negative",
+            icon: "la la-exclamation-circle",
+          });
           userForm.value.errorInConditions = true;
           return;
         }
