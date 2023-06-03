@@ -11,17 +11,20 @@
       >
         <q-input
           filled
-          v-model="email"
+          v-model="userForm.email"
           label="Enter your email *"
           type="email"
           lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Please type something',
+            isValidEmail,
+          ]"
         />
 
         <q-input
           filled
           type="password"
-          v-model="password"
+          v-model="userForm.password1"
           label="Enter your password *"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -30,10 +33,21 @@
         <q-input
           filled
           type="password"
-          v-model="password"
+          v-model="userForm.password2"
           label="Confirm your password *"
           lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Please type something',
+            isSamePassword,
+          ]"
+        />
+
+        <q-checkbox
+          v-model="userForm.conditions"
+          label="Accept conditions"
+          :style="
+            userForm.errorInConditions && !userForm.conditions && 'color: red'
+          "
         />
 
         <div class="row justify-end">
@@ -52,9 +66,47 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "Forms",
+  setup() {
+    const userForm = ref({
+      email: "",
+      password1: "",
+      password2: "",
+      conditions: false,
+      errorInConditions: false,
+    });
+
+    return {
+      userForm,
+      onSubmit() {
+        console.log(userForm.value);
+        userForm.value.errorInConditions = false;
+        if (!userForm.value.conditions) {
+          userForm.value.errorInConditions = true;
+          return;
+        }
+      },
+      onReset() {
+        userForm.value = {
+          email: "",
+          password1: "",
+          password2: "",
+          conditions: false,
+          errorInConditions: false,
+        };
+      },
+      isValidEmail(val) {
+        const emailPattern =
+          /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+        return emailPattern.test(val) || "Invalid e-mail.";
+      },
+      isSamePassword(val) {
+        return val === userForm.value.password1 || "Passwords don't match";
+      },
+    };
+  },
 });
 </script>
